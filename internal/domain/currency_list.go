@@ -12,7 +12,7 @@ type CurrencyList struct {
 
 func (cl *CurrencyList) GetCurrencyList() string {
 	c := []string{}
-	for code, _ := range cl.AvailableCurrencies {
+	for code := range cl.AvailableCurrencies {
 		c = append(c, code, strings.ToLower(code))
 	}
 
@@ -21,7 +21,7 @@ func (cl *CurrencyList) GetCurrencyList() string {
 
 func (cl *CurrencyList) GetCurrencyListUpper() string {
 	c := []string{}
-	for code, _ := range cl.AvailableCurrencies {
+	for code := range cl.AvailableCurrencies {
 		c = append(c, code)
 	}
 

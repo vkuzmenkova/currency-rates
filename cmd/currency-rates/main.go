@@ -11,11 +11,14 @@ import (
 	"github.com/spf13/viper"
 	"github.com/vkuzmenkova/currency-rates/internal/controller"
 	"github.com/vkuzmenkova/currency-rates/middleware"
+
+	httpSwagger "github.com/swaggo/http-swagger/v2"
+	_ "github.com/vkuzmenkova/currency-rates/docs"
 )
 
-// @title           Swagger Currency Rate API
+// @title           Swagger Currency Rates API
 // @version         1.0
-// @description     This is a sample server celler server.
+// @description     This is a currency rates service.
 // @contact.name   Valentina Kuzmenkova
 // @contact.email  valentinakuzmenkova@gmail.com
 // @host      localhost:8080
@@ -24,6 +27,7 @@ import (
 // @externalDocs.url          https://swagger.io/resources/open-api/
 func main() {
 	ctx := context.Background()
+	//time.Local = time.UTC
 
 	c, err := controller.NewController(ctx)
 	if err != nil {
@@ -40,8 +44,14 @@ func main() {
 	).Methods(http.MethodGet)
 	subrouter.Handle(
 		"/rates/{code}",
-		middleware.LoggingRequest(http.HandlerFunc(c.GetRate)),
+		middleware.LoggingRequest(http.HandlerFunc(c.GetLastRate)),
 	).Methods(http.MethodGet)
+	subrouter.Handle(
+		"/rates",
+		middleware.LoggingRequest(http.HandlerFunc(c.GetRateByUUID)),
+	).Methods(http.MethodGet)
+
+	subrouter.PathPrefix("/swagger").Handler(httpSwagger.WrapHandler)
 
 	srv := http.Server{
 		Handler:      subrouter,

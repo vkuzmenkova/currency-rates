@@ -3,10 +3,10 @@ package models
 import "github.com/google/uuid"
 
 type CurrencyRate struct {
-	UpdatedAt string
-	Base      string
-	Currency  string
-	Value     float64
+	UpdatedAt string  `json:"updated_at"`
+	Base      string  `json:"base"`
+	Currency  string  `json:"currency"`
+	Value     float64 `json:"value"`
 }
 
 type CurrencyUpdateUUID struct {
