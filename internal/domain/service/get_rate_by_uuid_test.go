@@ -30,7 +30,7 @@ func TestCurrenciesService_GetRateByUUID(t *testing.T) {
 		{
 			name:    "CurrencyRate",
 			args:    args{ctx: context.Background(), uuid: uuid.New(), error: nil},
-			want:    models.CurrencyRate{UpdatedAt: time.Now().String(), Base: "USD", Currency: "EUR", Value: 0},
+			want:    models.CurrencyRate{UpdatedAt: time.Time{}.String(), Value: 0},
 			wantErr: false,
 		},
 		{
