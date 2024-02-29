@@ -1,4 +1,4 @@
-name: GoService
+name: CurrencyRatesService
 
 on:
   push:

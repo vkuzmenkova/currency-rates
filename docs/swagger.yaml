@@ -1,6 +1,6 @@
 basePath: /api/v1
 definitions:
-  controller.BaseAndCodeAreEqual:
+  controller.BaseAndCodeAreEqualError:
     properties:
       message:
         type: string
@@ -100,16 +100,16 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/controller.BaseAndCodeAreEqual'
+            $ref: '#/definitions/controller.BaseAndCodeAreEqualError'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/controller.BaseAndCodeAreEqual'
+            type: string
       summary: Gets rate from the last update
       tags:
       - rate
   /rates/{code}/update:
-    get:
+    put:
       description: Initiates updating rate
       parameters:
       - description: currency base, f.e. EUR
@@ -132,11 +132,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/controller.BaseAndCodeAreEqual'
+            $ref: '#/definitions/controller.BaseAndCodeAreEqualError'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/controller.BaseAndCodeAreEqual'
+            type: string
       summary: Initiates updating rate
       tags:
       - rate

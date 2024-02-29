@@ -2,13 +2,14 @@ package currencyrates
 
 import (
 	"context"
+	"reflect"
+	"testing"
+
 	goredis "github.com/go-redis/redis/v8"
 	"github.com/gocraft/work"
 	"github.com/google/uuid"
 	"github.com/vkuzmenkova/currency-rates/internal/db"
 	"github.com/vkuzmenkova/currency-rates/internal/domain"
-	"reflect"
-	"testing"
 )
 
 func TestCurrenciesService_UpdateRate(t *testing.T) {

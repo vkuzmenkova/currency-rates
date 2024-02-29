@@ -89,20 +89,20 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.BaseAndCodeAreEqual"
+                            "$ref": "#/definitions/controller.BaseAndCodeAreEqualError"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/controller.BaseAndCodeAreEqual"
+                            "type": "string"
                         }
                     }
                 }
             }
         },
         "/rates/{code}/update": {
-            "get": {
+            "put": {
                 "description": "Initiates updating rate",
                 "produces": [
                     "application/json"
@@ -137,13 +137,13 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.BaseAndCodeAreEqual"
+                            "$ref": "#/definitions/controller.BaseAndCodeAreEqualError"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/controller.BaseAndCodeAreEqual"
+                            "type": "string"
                         }
                     }
                 }
@@ -151,7 +151,7 @@
         }
     },
     "definitions": {
-        "controller.BaseAndCodeAreEqual": {
+        "controller.BaseAndCodeAreEqualError": {
             "type": "object",
             "properties": {
                 "message": {

@@ -3,9 +3,11 @@ package main
 import (
 	"context"
 	"fmt"
-	"log"
 	"net/http"
+	"os"
 	"time"
+
+	"github.com/rs/zerolog"
 
 	"github.com/gorilla/mux"
 	"github.com/spf13/viper"
@@ -14,6 +16,8 @@ import (
 
 	httpSwagger "github.com/swaggo/http-swagger/v2"
 	_ "github.com/vkuzmenkova/currency-rates/docs"
+
+	"github.com/rs/zerolog/log"
 )
 
 // @title           Swagger Currency Rates API
@@ -28,10 +32,12 @@ import (
 func main() {
 	ctx := context.Background()
 	//time.Local = time.UTC
+	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
+	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
 
 	c, err := controller.NewController(ctx)
 	if err != nil {
-		log.Fatalln(err)
+		log.Err(err)
 	}
 
 	router := mux.NewRouter().StrictSlash(true)
@@ -40,7 +46,7 @@ func main() {
 	subrouter.Handle(
 		"/rates/{code}/update",
 		middleware.LoggingRequest(http.HandlerFunc(c.UpdateRate)),
-	).Methods(http.MethodGet)
+	).Methods(http.MethodPut)
 	subrouter.Handle(
 		"/rates/{code}",
 		middleware.LoggingRequest(http.HandlerFunc(c.GetLastRate)),
@@ -59,8 +65,8 @@ func main() {
 		ReadTimeout:  15 * time.Second,
 	}
 
-	log.Println("Server started at :8080")
+	log.Info().Msg("Server started at :8080")
 
-	log.Fatal(srv.ListenAndServe())
+	log.Err(srv.ListenAndServe())
 
 }

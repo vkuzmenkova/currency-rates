@@ -2,10 +2,11 @@ package db
 
 import (
 	"context"
+	"time"
+
 	"github.com/go-redis/redis/v8"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
-	"time"
 )
 
 //go:generate go run github.com/vektra/mockery/v2@v2.42.0  --name=DB

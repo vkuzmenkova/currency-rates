@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"log"
 	"time"
 
 	sq "github.com/Masterminds/squirrel"
@@ -18,7 +17,6 @@ func (s *CurrenciesService) GetRateByUUID(ctx context.Context, uuid uuid.UUID) (
 		Where(sq.Eq{"uuid": uuid}).
 		PlaceholderFormat(sq.Dollar).ToSql()
 	if err != nil {
-		log.Printf("sql select: %s", err)
 		return models.CurrencyRate{}, fmt.Errorf("sql select: %w", err)
 	}
 
@@ -31,7 +29,6 @@ func (s *CurrenciesService) GetRateByUUID(ctx context.Context, uuid uuid.UUID) (
 		return models.CurrencyRate{}, NoUUIDFoundError{Message: err.Error()}
 	}
 	if err != nil {
-		log.Printf("QueryRow: %s", err)
 		return models.CurrencyRate{}, fmt.Errorf("QueryRow: %w", err)
 	}
 

@@ -3,9 +3,10 @@ package db
 import (
 	"context"
 	"fmt"
+
 	"github.com/jackc/pgx/v5"
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"
-	"log"
 )
 
 type CurrenciesRepo struct {
@@ -17,7 +18,7 @@ func NewCurrenciesRepo(ctx context.Context) (*CurrenciesRepo, error) {
 	if err != nil {
 		return nil, fmt.Errorf("newPGConnection: %w", err)
 	}
-	log.Println("PG connection established")
+	log.Info().Msg("PG connection established")
 
 	return &CurrenciesRepo{
 		Conn: conn,

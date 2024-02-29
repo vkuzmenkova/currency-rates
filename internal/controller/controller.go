@@ -74,9 +74,9 @@ func ExtractCode(req *http.Request) (string, error) {
 // @Param	     base    query     string  USD  "currency base, default=USD"  Format(string)
 // @Success      200  {object} models.CurrencyUpdateUUID
 // @Failure      400  {object} UnavailableCurrencyError
-// @Failure      400  {object} BaseAndCodeAreEqual
-// @Failure      500  {object} BaseAndCodeAreEqual
-// @Router       /rates/{code}/update [get]
+// @Failure      400  {object} BaseAndCodeAreEqualError
+// @Failure      500  {object} string
+// @Router       /rates/{code}/update [put]
 func (c *Controller) UpdateRate(resp http.ResponseWriter, req *http.Request) {
 	ctx := req.Context()
 
@@ -130,8 +130,8 @@ func (c *Controller) UpdateRate(resp http.ResponseWriter, req *http.Request) {
 // @Param	     base    query     string  USD  "currency base, default=USD"  Format(string)
 // @Success      200  {object} models.CurrencyRate
 // @Failure      400  {object} UnavailableCurrencyError
-// @Failure      400  {object} BaseAndCodeAreEqual
-// @Failure      500  {object} BaseAndCodeAreEqual
+// @Failure      400  {object} BaseAndCodeAreEqualError
+// @Failure      500  {object} string
 // @Router       /rates/{code} [get]
 func (c *Controller) GetLastRate(resp http.ResponseWriter, req *http.Request) {
 	ctx := req.Context()

@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"log"
 	"time"
 
 	sq "github.com/Masterminds/squirrel"
@@ -20,7 +19,6 @@ func (s *CurrenciesService) GetLastRate(ctx context.Context, base string, curren
 		Limit(1).
 		PlaceholderFormat(sq.Dollar).ToSql()
 	if err != nil {
-		log.Printf("sql select: %s\n", err)
 		return models.CurrencyRate{}, fmt.Errorf("sql select: %w", err)
 	}
 
@@ -32,7 +30,6 @@ func (s *CurrenciesService) GetLastRate(ctx context.Context, base string, curren
 		return models.CurrencyRate{}, NoValueFoundError{Currency: currencyCode}
 	}
 	if err != nil {
-		log.Printf("QueryRow: %s", err)
 		return models.CurrencyRate{}, fmt.Errorf("QueryRow: %w", err)
 	}
 

@@ -1,9 +1,10 @@
 package middleware
 
 import (
-	"log"
 	"net/http"
 	"time"
+
+	"github.com/rs/zerolog/log"
 )
 
 type LoggingResponseWriter struct {
@@ -23,6 +24,6 @@ func LoggingRequest(next http.Handler) http.Handler {
 
 		next.ServeHTTP(lrw, r)
 
-		log.Printf("[%s] %d %s %s - %v\n", r.Method, lrw.StatusCode, r.URL.Path, r.RemoteAddr, time.Since(start))
+		log.Info().Msgf("[%s] %d %s %s - %v\n", r.Method, lrw.StatusCode, r.URL.Path, r.RemoteAddr, time.Since(start))
 	})
 }

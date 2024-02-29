@@ -3,6 +3,10 @@ package currencyrates
 import (
 	"context"
 	"errors"
+	"reflect"
+	"testing"
+	"time"
+
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"github.com/stretchr/testify/mock"
@@ -10,9 +14,6 @@ import (
 	"github.com/vkuzmenkova/currency-rates/internal/domain"
 	"github.com/vkuzmenkova/currency-rates/mocks"
 	"github.com/vkuzmenkova/currency-rates/models"
-	"reflect"
-	"testing"
-	"time"
 )
 
 func TestCurrenciesService_GetRateByUUID(t *testing.T) {

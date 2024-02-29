@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"time"
 
@@ -60,7 +59,6 @@ func (p *VATProvider) GetRate(base string, currencyCode string) (*models.Currenc
 		Currency:  currencyCode,
 		Value:     c.Rates[currencyCode],
 	}
-	log.Println(rate)
 	time.Sleep(1 * time.Minute)
 
 	return &rate, nil

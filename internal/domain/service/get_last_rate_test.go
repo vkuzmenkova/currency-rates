@@ -3,15 +3,16 @@ package currencyrates
 import (
 	"context"
 	"errors"
+	"reflect"
+	"testing"
+	"time"
+
 	"github.com/jackc/pgx/v5"
 	"github.com/stretchr/testify/mock"
 	"github.com/vkuzmenkova/currency-rates/internal/db"
 	"github.com/vkuzmenkova/currency-rates/internal/domain"
 	"github.com/vkuzmenkova/currency-rates/mocks"
 	"github.com/vkuzmenkova/currency-rates/models"
-	"reflect"
-	"testing"
-	"time"
 )
 
 func TestCurrenciesService_GetLastRate(t *testing.T) {

@@ -6,6 +6,9 @@ run:
 
 linters:
 	golangci-lint run
+	go mod tidy
+	goimports -w .
+
 
 generate-mocks:
 	mockery --all -r

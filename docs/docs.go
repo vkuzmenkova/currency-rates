@@ -95,20 +95,20 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.BaseAndCodeAreEqual"
+                            "$ref": "#/definitions/controller.BaseAndCodeAreEqualError"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/controller.BaseAndCodeAreEqual"
+                            "type": "string"
                         }
                     }
                 }
             }
         },
         "/rates/{code}/update": {
-            "get": {
+            "put": {
                 "description": "Initiates updating rate",
                 "produces": [
                     "application/json"
@@ -143,13 +143,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.BaseAndCodeAreEqual"
+                            "$ref": "#/definitions/controller.BaseAndCodeAreEqualError"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/controller.BaseAndCodeAreEqual"
+                            "type": "string"
                         }
                     }
                 }
@@ -157,7 +157,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "controller.BaseAndCodeAreEqual": {
+        "controller.BaseAndCodeAreEqualError": {
             "type": "object",
             "properties": {
                 "message": {
