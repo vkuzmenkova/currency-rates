@@ -36,8 +36,8 @@ func NewCurrenciesService(ctx context.Context) (*CurrenciesService, error) {
 	}
 
 	redisPool := &redis.Pool{
-		MaxActive: 5,
-		MaxIdle:   5,
+		MaxActive: 10,
+		MaxIdle:   10,
 		Wait:      true,
 		Dial: func() (redis.Conn, error) {
 			return redis.Dial("tcp", fmt.Sprintf(":%s", viper.GetString("redis.port")))
@@ -60,7 +60,7 @@ func NewCurrenciesService(ctx context.Context) (*CurrenciesService, error) {
 		KV:           rdb,
 	}
 
-	service.Pool.Job("update_currency_rate", service.UpdateRateJob)
+	service.Pool.JobWithOptions("update_currency_rate", work.JobOptions{MaxFails: 5}, service.UpdateRateJob)
 	service.Pool.Start()
 
 	return &service, nil

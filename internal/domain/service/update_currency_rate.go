@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	TTL = 2 * time.Minute //uuid TTl
+	TTL = 10 * time.Minute //~2 min per job x 5 retries max //uuid TTl
 )
 
 func (s *CurrenciesService) UpdateRate(ctx context.Context, base string, currencyCode string) (uuid.UUID, error) {
@@ -58,7 +58,7 @@ func (s *CurrenciesService) UpdateRateJob(job *work.Job) error {
 	provider := vat.NewVATProvider()
 	c, err := provider.GetRate(base, currencyCode)
 	if err != nil {
-		log.Error().Msgf("getBaseRate: %s", err)
+		log.Error().Msgf("Job failed. getBaseRate: %s", err)
 		return fmt.Errorf("getBaseRate: %w", err)
 	}
 
@@ -68,20 +68,20 @@ func (s *CurrenciesService) UpdateRateJob(job *work.Job) error {
 		Values(uuidUpdate, s.CurrencyList.GetValueByCode(base), s.CurrencyList.GetValueByCode(currencyCode), c.Value, time.Now(), time.Now()).
 		PlaceholderFormat(sq.Dollar).ToSql()
 	if err != nil {
-		log.Error().Msgf("sql insert request: %s", err)
+		log.Error().Msgf("Job failed. sql insert request: %s", err)
 		return fmt.Errorf("sql insert request: %w", err)
 	}
 
 	_, err = s.Repo.Conn.Exec(ctx, sql, uuidUpdate, s.CurrencyList.GetValueByCode(base), s.CurrencyList.GetValueByCode(currencyCode), c.Value, time.Now(), time.Now())
 	if err != nil {
-		log.Error().Msgf("exec: %s", err)
+		log.Error().Msgf("Job failed. exec: %s", err)
 		return fmt.Errorf("exec: %w", err)
 	}
 
 	// Удаляем значение обновления
 	err = s.KV.Del(ctx, fmt.Sprintf("%s_%s", currencyCode, base)).Err()
 	if err != nil {
-		log.Error().Msgf("Failed to delete key: %w", fmt.Sprintf("%s_%s", currencyCode, base), err)
+		log.Error().Msgf("Job failed. Failed to delete key: %w", fmt.Sprintf("%s_%s", currencyCode, base), err)
 		return fmt.Errorf("redis del: %w", err)
 	}
 	log.Info().Msgf("Finished update %s, dur=%s\n", uuidUpdate, time.Since(startTime))
