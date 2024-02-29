@@ -10,7 +10,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
-	currencyrates "github.com/vkuzmenkova/currency-rates/internal/domain/currency_rates"
+	currencyrates "github.com/vkuzmenkova/currency-rates/internal/domain/service"
 	"github.com/vkuzmenkova/currency-rates/models"
 )
 
@@ -92,7 +92,7 @@ func (c *Controller) UpdateRate(resp http.ResponseWriter, req *http.Request) {
 		return
 	}
 	if base == code {
-		http.Error(resp, BaseAndCodeAreEqual{Message: fmt.Sprintf("%s:%s", base, code)}.Error(), http.StatusBadRequest)
+		http.Error(resp, BaseAndCodeAreEqualError{Message: fmt.Sprintf("%s:%s", base, code)}.Error(), http.StatusBadRequest)
 		return
 	}
 
@@ -148,7 +148,7 @@ func (c *Controller) GetLastRate(resp http.ResponseWriter, req *http.Request) {
 		return
 	}
 	if c.service.CurrencyList.IsCurrencyCodeEqualsBase(base, code) {
-		http.Error(resp, BaseAndCodeAreEqual{Message: fmt.Sprintf("%s:%s", base, code)}.Error(), http.StatusBadRequest)
+		http.Error(resp, BaseAndCodeAreEqualError{Message: fmt.Sprintf("%s:%s", base, code)}.Error(), http.StatusBadRequest)
 		return
 	}
 

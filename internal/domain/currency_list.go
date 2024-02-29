@@ -1,7 +1,6 @@
 package domain
 
 import (
-	"fmt"
 	"strings"
 )
 
@@ -40,10 +39,6 @@ func (cl *CurrencyList) GetCodeByValue(num uint8) string {
 
 func (cl *CurrencyList) IsCurrencyCodeEqualsBase(base string, code string) bool {
 	return base == code
-}
-
-func (cl *CurrencyList) GetKey(base string, code string) string {
-	return fmt.Sprintf("%s_%s", code, base)
 }
 
 func (cl *CurrencyList) IsCurrencyAvailable(code string) bool {

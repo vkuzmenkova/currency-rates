@@ -20,6 +20,11 @@ type VATProvider struct {
 	Host string
 }
 
+//go:generate go run github.com/vektra/mockery/v2@v2.42.0  --name=HTTP
+type HTTP interface {
+	Get(url string) (resp *http.Response, err error)
+}
+
 func NewVATProvider() providers.RatesProvider {
 	return &VATProvider{
 		Host: HOST,

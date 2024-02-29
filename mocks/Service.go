@@ -17,9 +17,9 @@ type Service struct {
 	mock.Mock
 }
 
-// GetLastRate provides a mock function with given fields: ctx, _a1, base, currency_code
-func (_m *Service) GetLastRate(ctx context.Context, _a1 uuid.UUID, base string, currency_code string) (models.CurrencyRate, error) {
-	ret := _m.Called(ctx, _a1, base, currency_code)
+// GetLastRate provides a mock function with given fields: ctx, _a1, base, currencyCode
+func (_m *Service) GetLastRate(ctx context.Context, _a1 uuid.UUID, base string, currencyCode string) (models.CurrencyRate, error) {
+	ret := _m.Called(ctx, _a1, base, currencyCode)
 
 	if len(ret) == 0 {
 		panic("no return value specified for GetLastRate")
@@ -28,16 +28,16 @@ func (_m *Service) GetLastRate(ctx context.Context, _a1 uuid.UUID, base string, 
 	var r0 models.CurrencyRate
 	var r1 error
 	if rf, ok := ret.Get(0).(func(context.Context, uuid.UUID, string, string) (models.CurrencyRate, error)); ok {
-		return rf(ctx, _a1, base, currency_code)
+		return rf(ctx, _a1, base, currencyCode)
 	}
 	if rf, ok := ret.Get(0).(func(context.Context, uuid.UUID, string, string) models.CurrencyRate); ok {
-		r0 = rf(ctx, _a1, base, currency_code)
+		r0 = rf(ctx, _a1, base, currencyCode)
 	} else {
 		r0 = ret.Get(0).(models.CurrencyRate)
 	}
 
 	if rf, ok := ret.Get(1).(func(context.Context, uuid.UUID, string, string) error); ok {
-		r1 = rf(ctx, _a1, base, currency_code)
+		r1 = rf(ctx, _a1, base, currencyCode)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -73,9 +73,9 @@ func (_m *Service) GetRateByUUID(ctx context.Context, _a1 uuid.UUID) (models.Cur
 	return r0, r1
 }
 
-// UpdateRate provides a mock function with given fields: ctx, _a1, base, currency_code
-func (_m *Service) UpdateRate(ctx context.Context, _a1 uuid.UUID, base string, currency_code string) error {
-	ret := _m.Called(ctx, _a1, base, currency_code)
+// UpdateRate provides a mock function with given fields: ctx, _a1, base, currencyCode
+func (_m *Service) UpdateRate(ctx context.Context, _a1 uuid.UUID, base string, currencyCode string) error {
+	ret := _m.Called(ctx, _a1, base, currencyCode)
 
 	if len(ret) == 0 {
 		panic("no return value specified for UpdateRate")
@@ -83,7 +83,7 @@ func (_m *Service) UpdateRate(ctx context.Context, _a1 uuid.UUID, base string, c
 
 	var r0 error
 	if rf, ok := ret.Get(0).(func(context.Context, uuid.UUID, string, string) error); ok {
-		r0 = rf(ctx, _a1, base, currency_code)
+		r0 = rf(ctx, _a1, base, currencyCode)
 	} else {
 		r0 = ret.Error(0)
 	}

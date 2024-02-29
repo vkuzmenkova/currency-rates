@@ -12,9 +12,9 @@ type RatesProvider struct {
 	mock.Mock
 }
 
-// GetRate provides a mock function with given fields: base, currency_code
-func (_m *RatesProvider) GetRate(base string, currency_code string) (*models.CurrencyRate, error) {
-	ret := _m.Called(base, currency_code)
+// GetRate provides a mock function with given fields: base, currencyCode
+func (_m *RatesProvider) GetRate(base string, currencyCode string) (*models.CurrencyRate, error) {
+	ret := _m.Called(base, currencyCode)
 
 	if len(ret) == 0 {
 		panic("no return value specified for GetRate")
@@ -23,10 +23,10 @@ func (_m *RatesProvider) GetRate(base string, currency_code string) (*models.Cur
 	var r0 *models.CurrencyRate
 	var r1 error
 	if rf, ok := ret.Get(0).(func(string, string) (*models.CurrencyRate, error)); ok {
-		return rf(base, currency_code)
+		return rf(base, currencyCode)
 	}
 	if rf, ok := ret.Get(0).(func(string, string) *models.CurrencyRate); ok {
-		r0 = rf(base, currency_code)
+		r0 = rf(base, currencyCode)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*models.CurrencyRate)
@@ -34,7 +34,7 @@ func (_m *RatesProvider) GetRate(base string, currency_code string) (*models.Cur
 	}
 
 	if rf, ok := ret.Get(1).(func(string, string) error); ok {
-		r1 = rf(base, currency_code)
+		r1 = rf(base, currencyCode)
 	} else {
 		r1 = ret.Error(1)
 	}

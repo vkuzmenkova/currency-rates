@@ -69,7 +69,3 @@ func NewCurrenciesService(ctx context.Context) (*CurrenciesService, error) {
 func (s *CurrenciesService) GetCode(code string) uint8 {
 	return s.CurrencyList.AvailableCurrencies[code]
 }
-
-func (s *CurrenciesService) CreateJobNameCodeBase(base string, code string) string {
-	return fmt.Sprintf("%s_%s", code, base)
-}
