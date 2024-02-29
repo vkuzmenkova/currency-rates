@@ -3,6 +3,7 @@ package controller
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"strings"
@@ -95,7 +96,7 @@ func (c *Controller) UpdateRate(resp http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	uuid, err := c.service.UpdateRateV2(ctx, base, code)
+	uuidUpdate, err := c.service.UpdateRate(ctx, base, code)
 	if err != nil {
 		http.Error(resp, err.Error(), http.StatusInternalServerError)
 		return
@@ -105,7 +106,7 @@ func (c *Controller) UpdateRate(resp http.ResponseWriter, req *http.Request) {
 		models.CurrencyUpdateUUID{
 			Base:     base,
 			Currency: code,
-			UUID:     uuid,
+			UUID:     uuidUpdate,
 		},
 	)
 	if err != nil {
@@ -197,7 +198,8 @@ func (c *Controller) GetRateByUUID(resp http.ResponseWriter, req *http.Request) 
 	// Ищем uuid в базе
 	cr, err = c.service.GetRateByUUID(ctx, UUID)
 	// Если не найден uuid
-	if noUUIDErr, ok := err.(*currencyrates.NoUUIDFoundError); ok {
+	var noUUIDErr *currencyrates.NoUUIDFoundError
+	if errors.As(err, &noUUIDErr) {
 		http.Error(resp, noUUIDErr.Error(), http.StatusBadRequest)
 		return
 	}

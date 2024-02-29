@@ -37,7 +37,6 @@ func main() {
 	router := mux.NewRouter().StrictSlash(true)
 	subrouter := router.PathPrefix("/api/v1").Subrouter()
 
-	// указать только нужные параметры base и uuid
 	subrouter.Handle(
 		"/rates/{code}/update",
 		middleware.LoggingRequest(http.HandlerFunc(c.UpdateRate)),

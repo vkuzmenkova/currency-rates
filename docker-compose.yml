@@ -1,0 +1,41 @@
+version: '3.8'
+services:
+  currency-rates:
+    container_name: currency-rates
+    build: .
+    command:
+      - app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+      - redis
+    environment:
+      - DB_POSTGRES_USER=postgres
+      - DB_POSTGRES_PASSWORD=dbpassword 
+    networks:
+     - app_network
+  db:
+    image: postgres:15.2-alpine
+    container_name: postgres
+    restart: always
+    ports:
+      - '5444:5432'
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=dbpassword
+      - POSTGRES_DB=currency-rates-db 
+    networks:
+     - app_network    
+  redis:
+    image: redis:7.2.4-alpine
+    container_name: redis
+    restart: always
+    ports:
+      - '6379:6379'
+    networks:
+     - app_network
+
+networks:
+  app_network:
+    driver: bridge 

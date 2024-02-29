@@ -26,7 +26,7 @@ func NewVATProvider() providers.RatesProvider {
 	}
 }
 
-func (p *VATProvider) GetRate(base string, currency_code string) (*models.CurrencyRate, error) {
+func (p *VATProvider) GetRate(base string, currencyCode string) (*models.CurrencyRate, error) {
 	resp, err := http.Get(fmt.Sprintf("%s/rates?base=%s", p.Host, base))
 	if err != nil {
 		return &models.CurrencyRate{}, fmt.Errorf("GET %s/rates?base=%s %d: %w", p.Host, base, resp.StatusCode, err)
@@ -52,8 +52,8 @@ func (p *VATProvider) GetRate(base string, currency_code string) (*models.Curren
 	rate := models.CurrencyRate{
 		UpdatedAt: time.Now().String(),
 		Base:      base,
-		Currency:  currency_code,
-		Value:     c.Rates[currency_code],
+		Currency:  currencyCode,
+		Value:     c.Rates[currencyCode],
 	}
 	log.Println(rate)
 	time.Sleep(1 * time.Minute)

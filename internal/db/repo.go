@@ -4,10 +4,25 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"time"
 
+	"github.com/go-redis/redis/v8"
 	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/spf13/viper"
 )
+
+//go:generate go run github.com/vektra/mockery/v2@v2.42.0  --name=DB
+type DB interface {
+	Exec(ctx context.Context, sql string, arguments ...interface{}) (commandTag pgconn.CommandTag, err error)
+	QueryRow(ctx context.Context, sql string, args ...interface{}) pgx.Row
+}
+
+//go:generate go run github.com/vektra/mockery/v2@v2.42.0  --name=KVDB
+type KVDB interface {
+	Get(ctx context.Context, key string) *redis.StringCmd
+	Set(ctx context.Context, key string, value interface{}, expiration time.Duration) *redis.StatusCmd
+}
 
 type CurrenciesRepo struct {
 	Conn *pgx.Conn

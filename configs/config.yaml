@@ -9,3 +9,6 @@ db:
   user: habrpguser
   password: pgpwd4habr
   ssl_mode: disable
+redis:
+  host: localhost
+  port: 6379

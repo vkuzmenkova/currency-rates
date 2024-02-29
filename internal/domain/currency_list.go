@@ -11,7 +11,7 @@ type CurrencyList struct {
 }
 
 func (cl *CurrencyList) GetCurrencyList() string {
-	c := []string{}
+	var c []string
 	for code := range cl.AvailableCurrencies {
 		c = append(c, code, strings.ToLower(code))
 	}
@@ -20,7 +20,7 @@ func (cl *CurrencyList) GetCurrencyList() string {
 }
 
 func (cl *CurrencyList) GetCurrencyListUpper() string {
-	c := []string{}
+	var c []string
 	for code := range cl.AvailableCurrencies {
 		c = append(c, code)
 	}
@@ -38,7 +38,6 @@ func (cl *CurrencyList) GetCodeByValue(num uint8) string {
 	return ""
 }
 
-// Вынести этот метод??
 func (cl *CurrencyList) IsCurrencyCodeEqualsBase(base string, code string) bool {
 	return base == code
 }
