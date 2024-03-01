@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	TTL = 10 * time.Minute //~2 min max per job x 5 retries //uuid TTl
+	TTL = 1 * time.Minute //uuid TTl
 )
 
 func (s *CurrenciesService) UpdateRate(ctx context.Context, base string, currencyCode string) (uuid.UUID, error) {
