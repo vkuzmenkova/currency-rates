@@ -2,8 +2,10 @@
 
 Service provides an async interface, where the user first makes a request to update the currency rate, and then, after some time, requests the rate. 
 
-To run service locally:
-`docker-compose run ...`
+To run service locally run from the root:
+```
+make start
+```
 
 Swagger docs: http://localhost:8080/api/v1/swagger/index.html#/
 

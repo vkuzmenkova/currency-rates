@@ -12,7 +12,6 @@ COPY middleware ./middleware
 COPY migrations ./migrations
 COPY models ./models
 COPY wait-for-postgres.sh ./wait-for-postgres.sh
-COPY migrations.sh ./migrations.sh
 
 # install psql
 RUN apt-get update
@@ -21,7 +20,6 @@ RUN go install github.com/pressly/goose/v3/cmd/goose@latest
 
 # make wait-for-postgres.sh executable
 RUN chmod +x wait-for-postgres.sh
-RUN chmod +x migrations.sh
 
 RUN go build -v -o /usr/local/bin/app ./cmd/currency-rates/
 
