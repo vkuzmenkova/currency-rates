@@ -7,7 +7,7 @@ type NoUUIDFoundError struct {
 }
 
 func (e NoUUIDFoundError) Error() string {
-	return fmt.Sprintf("Updating is in progress or UUID is not exist.")
+	return "Updating is in progress or UUID is not exist."
 }
 
 type NoValueFoundError struct {

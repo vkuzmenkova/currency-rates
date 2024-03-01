@@ -23,7 +23,7 @@ func (s *CurrenciesService) UpdateRate(ctx context.Context, base string, currenc
 		// Save info about currencies and UUID of the update
 		err = s.KV.Set(ctx, fmt.Sprintf("%s_%s", currencyCode, base), uuidUpdate.String(), TTL).Err()
 		if err != nil {
-			log.Error().Msgf("Failed to set key with TTL:", err)
+			log.Error().Msgf("Failed to set key with TTL: %s", err.Error())
 			return uuid.Nil, nil
 		}
 
@@ -80,8 +80,8 @@ func (s *CurrenciesService) UpdateRateJob(job *work.Job) error {
 	// Delete temporary info about update job
 	err = s.KV.Del(ctx, fmt.Sprintf("%s_%s", currencyCode, base)).Err()
 	if err != nil {
-		log.Error().Msgf("Job failed. Failed to delete key: %w", fmt.Sprintf("%s_%s", currencyCode, base), err)
-		return fmt.Errorf("redis del: %w", err)
+		log.Error().Msgf("Job failed. Failed to delete key: %s", err.Error())
+		return fmt.Errorf("redis del: %s", err.Error())
 	}
 	log.Info().Msgf("Finished update %s, dur=%s\n", uuidUpdate, time.Since(startTime))
 

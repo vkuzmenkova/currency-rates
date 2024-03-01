@@ -6,7 +6,6 @@ run:
 
 linters:
 	golangci-lint run
-	go mod tidy
 	goimports -w .
 
 

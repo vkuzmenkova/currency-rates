@@ -7,7 +7,7 @@ type BaseAndCodeAreEqualError struct {
 }
 
 func (e BaseAndCodeAreEqualError) Error() string {
-	return fmt.Sprint("Base and currency codes must be different")
+	return "Base and currency codes must be different"
 }
 
 type UnavailableCurrencyError struct {
