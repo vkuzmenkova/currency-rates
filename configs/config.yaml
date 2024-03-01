@@ -1,14 +1,13 @@
 server:
-  host: localhost
+  host: app
   port: 8080
 db:
   driver: postgres
-  host: localhost
+  host: db
   port: 5432
   name: postgres
-  user: habrpguser
-  password: pgpwd4habr
+  user: postgres
+  password: qwerty
   ssl_mode: disable
 redis:
-  host: localhost
   port: 6379

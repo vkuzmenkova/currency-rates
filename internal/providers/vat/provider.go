@@ -59,7 +59,7 @@ func (p *VATProvider) GetRate(base string, currencyCode string) (*models.Currenc
 		Currency:  currencyCode,
 		Value:     c.Rates[currencyCode],
 	}
-	time.Sleep(1 * time.Minute)
+	//time.Sleep(1 * time.Second) // Imitates long response
 
 	return &rate, nil
 }

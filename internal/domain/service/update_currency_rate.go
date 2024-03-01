@@ -13,23 +13,22 @@ import (
 )
 
 const (
-	TTL = 10 * time.Minute //~2 min per job x 5 retries max //uuid TTl
+	TTL = 10 * time.Minute //~2 min max per job x 5 retries //uuid TTl
 )
 
 func (s *CurrenciesService) UpdateRate(ctx context.Context, base string, currencyCode string) (uuid.UUID, error) {
-
 	value, err := s.KV.Get(ctx, fmt.Sprintf("%s_%s", currencyCode, base)).Result()
 	if err != nil {
 		uuidUpdate := uuid.New()
-		// Фиксируем запуск обновления и значение uuid
+		// Save info about currencies and UUID of the update
 		err = s.KV.Set(ctx, fmt.Sprintf("%s_%s", currencyCode, base), uuidUpdate.String(), TTL).Err()
 		if err != nil {
-			fmt.Println("Failed to set key with TTL:", err)
+			log.Error().Msgf("Failed to set key with TTL:", err)
 			return uuid.Nil, nil
 		}
 
-		// Запускаем джобу обновения
-		_, err = s.Enqueuer.EnqueueUnique("update_currency_rate", work.Q{"base": base, "currency_code": currencyCode, "uuid": uuidUpdate})
+		// Initiate update
+		_, err = s.Enqueuer.Enqueue("update_currency_rate", work.Q{"base": base, "currency_code": currencyCode, "uuid": uuidUpdate})
 		if err != nil {
 			return uuid.Nil, fmt.Errorf("EnqueueUnique: %w", err)
 		}
@@ -54,7 +53,7 @@ func (s *CurrenciesService) UpdateRateJob(job *work.Job) error {
 	log.Info().Msgf("Start update %s\n", uuidUpdate)
 	startTime := time.Now()
 
-	// Получаем значение из провайдера
+	// Get info from the provider
 	provider := vat.NewVATProvider()
 	c, err := provider.GetRate(base, currencyCode)
 	if err != nil {
@@ -62,7 +61,7 @@ func (s *CurrenciesService) UpdateRateJob(job *work.Job) error {
 		return fmt.Errorf("getBaseRate: %w", err)
 	}
 
-	// Записываем значение в базу
+	// Store value in DB
 	sql, _, err := sq.Insert("currency_rates").
 		Columns("uuid", "base", "currency", "rate", "created_at", "updated_at").
 		Values(uuidUpdate, s.CurrencyList.GetValueByCode(base), s.CurrencyList.GetValueByCode(currencyCode), c.Value, time.Now(), time.Now()).
@@ -78,7 +77,7 @@ func (s *CurrenciesService) UpdateRateJob(job *work.Job) error {
 		return fmt.Errorf("exec: %w", err)
 	}
 
-	// Удаляем значение обновления
+	// Delete temporary info about update job
 	err = s.KV.Del(ctx, fmt.Sprintf("%s_%s", currencyCode, base)).Err()
 	if err != nil {
 		log.Error().Msgf("Job failed. Failed to delete key: %w", fmt.Sprintf("%s_%s", currencyCode, base), err)

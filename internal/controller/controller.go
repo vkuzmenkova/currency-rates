@@ -66,8 +66,7 @@ func ExtractCode(req *http.Request) (string, error) {
 }
 
 // UpdateRate godoc
-// @Summary      Initiates updating rate
-// @Description  Initiates updating rate
+// @Summary      Initiates an exchange rate update and provides a UUID of the update
 // @Tags         rate
 // @Produce      json
 // @Param	     code    path     string  USD  "currency base, f.e. EUR"  Format(string)
@@ -122,8 +121,7 @@ func (c *Controller) UpdateRate(resp http.ResponseWriter, req *http.Request) {
 }
 
 // GetLastRate godoc
-// @Summary      Gets rate from the last update
-// @Description  Gets rate from the last update
+// @Summary      Get the latest currency rate from the database
 // @Tags         rate
 // @Produce      json
 // @Param	     code    path     string  USD  "currency base, f.e. EUR"  Format(string)
@@ -175,7 +173,6 @@ func (c *Controller) GetLastRate(resp http.ResponseWriter, req *http.Request) {
 
 // GetRateByUUID godoc
 // @Summary      Gets rate by UUID
-// @Description  Gets rate by UUID
 // @Tags         rate
 // @Produce      json
 // @Param	     uuid    query     string  _  "uuid of update"  Format(string)

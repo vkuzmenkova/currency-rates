@@ -22,7 +22,7 @@ import (
 
 // @title           Swagger Currency Rates API
 // @version         1.0
-// @description     This is a currency rates service.
+// @description     Base currency is USD. The following currencies are supported: USD, EUR, MXN. Info is provided by VAT comply.
 // @contact.name   Valentina Kuzmenkova
 // @contact.email  valentinakuzmenkova@gmail.com
 // @host      localhost:8080

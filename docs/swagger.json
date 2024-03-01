@@ -1,7 +1,7 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "This is a currency rates service.",
+        "description": "Base currency is USD. The following currencies are supported: USD, EUR, MXN. Info is provided by VAT comply.",
         "title": "Swagger Currency Rates API",
         "contact": {
             "name": "Valentina Kuzmenkova",
@@ -14,7 +14,6 @@
     "paths": {
         "/rates": {
             "get": {
-                "description": "Gets rate by UUID",
                 "produces": [
                     "application/json"
                 ],
@@ -55,14 +54,13 @@
         },
         "/rates/{code}": {
             "get": {
-                "description": "Gets rate from the last update",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "rate"
                 ],
-                "summary": "Gets rate from the last update",
+                "summary": "Get the latest currency rate from the database",
                 "parameters": [
                     {
                         "type": "string",
@@ -103,14 +101,13 @@
         },
         "/rates/{code}/update": {
             "put": {
-                "description": "Initiates updating rate",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "rate"
                 ],
-                "summary": "Initiates updating rate",
+                "summary": "Initiates an exchange rate update and provides a UUID of the update",
                 "parameters": [
                     {
                         "type": "string",

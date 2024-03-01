@@ -45,13 +45,13 @@ info:
   contact:
     email: valentinakuzmenkova@gmail.com
     name: Valentina Kuzmenkova
-  description: This is a currency rates service.
+  description: 'Base currency is USD. The following currencies are supported: USD,
+    EUR, MXN. Info is provided by VAT comply.'
   title: Swagger Currency Rates API
   version: "1.0"
 paths:
   /rates:
     get:
-      description: Gets rate by UUID
       parameters:
       - description: uuid of update
         format: string
@@ -78,7 +78,6 @@ paths:
       - rate
   /rates/{code}:
     get:
-      description: Gets rate from the last update
       parameters:
       - description: currency base, f.e. EUR
         format: string
@@ -105,12 +104,11 @@ paths:
           description: Internal Server Error
           schema:
             type: string
-      summary: Gets rate from the last update
+      summary: Get the latest currency rate from the database
       tags:
       - rate
   /rates/{code}/update:
     put:
-      description: Initiates updating rate
       parameters:
       - description: currency base, f.e. EUR
         format: string
@@ -137,7 +135,7 @@ paths:
           description: Internal Server Error
           schema:
             type: string
-      summary: Initiates updating rate
+      summary: Initiates an exchange rate update and provides a UUID of the update
       tags:
       - rate
 swagger: "2.0"

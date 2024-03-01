@@ -40,14 +40,14 @@ func NewCurrenciesService(ctx context.Context) (*CurrenciesService, error) {
 		MaxIdle:   10,
 		Wait:      true,
 		Dial: func() (redis.Conn, error) {
-			return redis.Dial("tcp", fmt.Sprintf(":%s", viper.GetString("redis.port")))
+			return redis.Dial("tcp", fmt.Sprintf("redis:%s", viper.GetString("redis.port")))
 		},
 	}
 	enqueuer := work.NewEnqueuer("currency_rates", redisPool)
 	pool := work.NewWorkerPool(ctx, 10, "currency_rates", redisPool)
 
 	rdb := goredis.NewClient(&goredis.Options{
-		Addr:     fmt.Sprintf("%s:%s", viper.GetString("redis.host"), viper.GetString("redis.port")),
+		Addr:     fmt.Sprintf("redis:%s", viper.GetString("redis.port")),
 		Password: "",
 		DB:       0,
 	})

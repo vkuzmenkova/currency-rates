@@ -20,7 +20,6 @@ const docTemplate = `{
     "paths": {
         "/rates": {
             "get": {
-                "description": "Gets rate by UUID",
                 "produces": [
                     "application/json"
                 ],
@@ -61,14 +60,13 @@ const docTemplate = `{
         },
         "/rates/{code}": {
             "get": {
-                "description": "Gets rate from the last update",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "rate"
                 ],
-                "summary": "Gets rate from the last update",
+                "summary": "Get the latest currency rate from the database",
                 "parameters": [
                     {
                         "type": "string",
@@ -109,14 +107,13 @@ const docTemplate = `{
         },
         "/rates/{code}/update": {
             "put": {
-                "description": "Initiates updating rate",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "rate"
                 ],
-                "summary": "Initiates updating rate",
+                "summary": "Initiates an exchange rate update and provides a UUID of the update",
                 "parameters": [
                     {
                         "type": "string",
@@ -229,7 +226,7 @@ var SwaggerInfo = &swag.Spec{
 	BasePath:         "/api/v1",
 	Schemes:          []string{},
 	Title:            "Swagger Currency Rates API",
-	Description:      "This is a currency rates service.",
+	Description:      "Base currency is USD. The following currencies are supported: USD, EUR, MXN. Info is provided by VAT comply.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",
