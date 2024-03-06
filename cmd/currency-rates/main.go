@@ -20,6 +20,8 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
+const SHUTDOWN_TIMEOUT = 5 * time.Second
+
 // @title           Swagger Currency Rates API
 // @version         1.0
 // @description     Base currency is USD. The following currencies are supported: USD, EUR, MXN. Info is provided by VAT comply.

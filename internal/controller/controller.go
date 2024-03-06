@@ -200,7 +200,6 @@ func (c *Controller) GetRateByUUID(resp http.ResponseWriter, req *http.Request) 
 		http.Error(resp, noUUIDErr.Error(), http.StatusBadRequest)
 		return
 	}
-	// Иные ошибки
 	if err != nil {
 		http.Error(resp, err.Error(), http.StatusInternalServerError)
 		return
