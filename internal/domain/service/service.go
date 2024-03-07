@@ -40,14 +40,14 @@ func NewCurrenciesService(ctx context.Context) (*CurrenciesService, error) {
 		MaxIdle:   10,
 		Wait:      true,
 		Dial: func() (redis.Conn, error) {
-			return redis.Dial("tcp", fmt.Sprintf("redis:%s", viper.GetString("redis.port")))
+			return redis.Dial("tcp", fmt.Sprintf("%s:%s", viper.GetString("redis.host"), viper.GetString("redis.port")))
 		},
 	}
 	enqueuer := work.NewEnqueuer("currency_rates", redisPool)
 	pool := work.NewWorkerPool(ctx, 10, "currency_rates", redisPool)
 
 	rdb := goredis.NewClient(&goredis.Options{
-		Addr:     fmt.Sprintf("redis:%s", viper.GetString("redis.port")),
+		Addr:     fmt.Sprintf("%s:%s", viper.GetString("redis.host"), viper.GetString("redis.port")),
 		Password: "",
 		DB:       0,
 	})
@@ -68,4 +68,15 @@ func NewCurrenciesService(ctx context.Context) (*CurrenciesService, error) {
 
 func (s *CurrenciesService) GetCode(code string) uint8 {
 	return s.CurrencyList.AvailableCurrencies[code]
+}
+
+func (s *CurrenciesService) checkInput(base string, code string) error {
+	if !s.CurrencyList.IsCurrencyAvailable(base) || !s.CurrencyList.IsCurrencyAvailable(code) {
+		return UnavailableCurrencyError{CurrencyList: s.CurrencyList.GetCurrencyListUpper()}
+	}
+	if base == code {
+		return BaseAndCodeAreEqualError{Message: fmt.Sprintf("%s:%s", base, code)}
+	}
+
+	return nil
 }

@@ -86,16 +86,15 @@ func (c *Controller) UpdateRate(resp http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	if !c.service.CurrencyList.IsCurrencyAvailable(base) || !c.service.CurrencyList.IsCurrencyAvailable(code) {
-		http.Error(resp, UnavailableCurrencyError{CurrencyList: c.service.CurrencyList.GetCurrencyListUpper()}.Error(), http.StatusBadRequest)
-		return
-	}
-	if base == code {
-		http.Error(resp, BaseAndCodeAreEqualError{Message: fmt.Sprintf("%s:%s", base, code)}.Error(), http.StatusBadRequest)
-		return
-	}
-
 	uuidUpdate, err := c.service.UpdateRate(ctx, base, code)
+	if errors.As(err, &currencyrates.UnavailableCurrencyError{}) {
+		http.Error(resp, err.Error(), http.StatusBadRequest)
+		return
+	}
+	if errors.As(err, &currencyrates.BaseAndCodeAreEqualError{}) {
+		http.Error(resp, err.Error(), http.StatusBadRequest)
+		return
+	}
 	if err != nil {
 		http.Error(resp, err.Error(), http.StatusInternalServerError)
 		return
@@ -141,18 +140,17 @@ func (c *Controller) GetLastRate(resp http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	if !c.service.CurrencyList.IsCurrencyAvailable(base) || !c.service.CurrencyList.IsCurrencyAvailable(code) {
-		http.Error(resp, UnavailableCurrencyError{CurrencyList: c.service.CurrencyList.GetCurrencyListUpper()}.Error(), http.StatusBadRequest)
-		return
-	}
-	if c.service.CurrencyList.IsCurrencyCodeEqualsBase(base, code) {
-		http.Error(resp, BaseAndCodeAreEqualError{Message: fmt.Sprintf("%s:%s", base, code)}.Error(), http.StatusBadRequest)
-		return
-	}
-
 	var cr models.CurrencyRate
 
 	cr, err = c.service.GetLastRate(ctx, base, code)
+	if errors.As(err, &currencyrates.UnavailableCurrencyError{}) {
+		http.Error(resp, err.Error(), http.StatusBadRequest)
+		return
+	}
+	if errors.As(err, &currencyrates.BaseAndCodeAreEqualError{}) {
+		http.Error(resp, err.Error(), http.StatusBadRequest)
+		return
+	}
 	if err != nil {
 		http.Error(resp, err.Error(), http.StatusInternalServerError)
 		return
@@ -186,18 +184,15 @@ func (c *Controller) GetRateByUUID(resp http.ResponseWriter, req *http.Request) 
 
 	UUID, err := ExtractUUID(req)
 	if err != nil {
-		http.Error(resp, InvalidUUIDError{}.Error(), http.StatusBadRequest)
+		http.Error(resp, currencyrates.InvalidUUIDError{}.Error(), http.StatusBadRequest)
 		return
 	}
 
 	var cr models.CurrencyRate
 
-	// Ищем uuid в базе
 	cr, err = c.service.GetRateByUUID(ctx, UUID)
-	// Если не найден uuid
-	var noUUIDErr *currencyrates.NoUUIDFoundError
-	if errors.As(err, &noUUIDErr) {
-		http.Error(resp, noUUIDErr.Error(), http.StatusBadRequest)
+	if errors.As(err, &currencyrates.NoUUIDFoundError{}) {
+		http.Error(resp, currencyrates.NoUUIDFoundError{}.Error(), http.StatusBadRequest)
 		return
 	}
 	if err != nil {

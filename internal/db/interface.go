@@ -4,10 +4,20 @@ import (
 	"context"
 	"time"
 
+	"github.com/google/uuid"
+	"github.com/vkuzmenkova/currency-rates/models"
+
 	"github.com/go-redis/redis/v8"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
 )
+
+//go:generate go run github.com/vektra/mockery/v2@v2.42.0  --name=Repo
+type Repo interface {
+	GetLastRate(ctx context.Context, base uint8, currencyCode uint8)
+	GetRateByUUID(ctx context.Context, uuid uuid.UUID) (models.CurrencyRate, error)
+	InsertRate(ctx context.Context, uuidUpdate string, base uint8, currencyCode uint8, value float64) error
+}
 
 //go:generate go run github.com/vektra/mockery/v2@v2.42.0  --name=DB
 type DB interface {

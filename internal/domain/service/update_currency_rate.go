@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"time"
 
-	sq "github.com/Masterminds/squirrel"
 	"github.com/gocraft/work"
 	"github.com/google/uuid"
 	"github.com/rs/zerolog/log"
@@ -17,6 +16,11 @@ const (
 )
 
 func (s *CurrenciesService) UpdateRate(ctx context.Context, base string, currencyCode string) (uuid.UUID, error) {
+	err := s.checkInput(base, currencyCode)
+	if err != nil {
+		return uuid.Nil, err
+	}
+
 	value, err := s.KV.Get(ctx, fmt.Sprintf("%s_%s", currencyCode, base)).Result()
 	if err != nil {
 		uuidUpdate := uuid.New()
@@ -57,24 +61,15 @@ func (s *CurrenciesService) UpdateRateJob(job *work.Job) error {
 	provider := vat.NewVATProvider()
 	c, err := provider.GetRate(base, currencyCode)
 	if err != nil {
-		log.Error().Msgf("Job failed. getBaseRate: %s", err)
+		log.Error().Msgf("Job failed. getRate: %s", err)
 		return fmt.Errorf("getBaseRate: %w", err)
 	}
 
 	// Store value in DB
-	sql, _, err := sq.Insert("currency_rates").
-		Columns("uuid", "base", "currency", "rate", "created_at", "updated_at").
-		Values(uuidUpdate, s.CurrencyList.GetValueByCode(base), s.CurrencyList.GetValueByCode(currencyCode), c.Value, time.Now(), time.Now()).
-		PlaceholderFormat(sq.Dollar).ToSql()
+	err = s.Repo.InsertRate(ctx, uuidUpdate, s.CurrencyList.GetValueByCode(c.Base), s.CurrencyList.GetValueByCode(c.Currency), c.Value)
 	if err != nil {
-		log.Error().Msgf("Job failed. sql insert request: %s", err)
-		return fmt.Errorf("sql insert request: %w", err)
-	}
-
-	_, err = s.Repo.Conn.Exec(ctx, sql, uuidUpdate, s.CurrencyList.GetValueByCode(base), s.CurrencyList.GetValueByCode(currencyCode), c.Value, time.Now(), time.Now())
-	if err != nil {
-		log.Error().Msgf("Job failed. exec: %s", err)
-		return fmt.Errorf("exec: %w", err)
+		log.Error().Msgf("Job failed. InsertRate: %s", err)
+		return fmt.Errorf("getBaseRate: %w", err)
 	}
 
 	// Delete temporary info about update job

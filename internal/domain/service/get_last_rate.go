@@ -2,38 +2,25 @@ package currencyrates
 
 import (
 	"context"
-	"errors"
-	"fmt"
-	"time"
 
-	sq "github.com/Masterminds/squirrel"
-	"github.com/jackc/pgx/v5"
 	"github.com/vkuzmenkova/currency-rates/models"
 )
 
 func (s *CurrenciesService) GetLastRate(ctx context.Context, base string, currencyCode string) (models.CurrencyRate, error) {
-	sql, _, err := sq.Select("rate", "updated_at").From("currency_rates").
-		Where(sq.Eq{"base": s.GetCode(base), "currency": s.GetCode(currencyCode)}).
-		Where("updated_at is not null").
-		OrderBy("updated_at DESC").
-		Limit(1).
-		PlaceholderFormat(sq.Dollar).ToSql()
+	err := s.checkInput(base, currencyCode)
 	if err != nil {
-		return models.CurrencyRate{}, fmt.Errorf("sql select: %w", err)
+		return models.CurrencyRate{}, err
 	}
 
-	var updatedAt time.Time
-	var value float64
-
-	err = s.Repo.Conn.QueryRow(ctx, sql, s.GetCode(base), s.GetCode(currencyCode)).Scan(&value, &updatedAt)
-	if errors.Is(err, pgx.ErrNoRows) {
-		return models.CurrencyRate{}, NoValueFoundError{Currency: currencyCode}
-	}
+	cr, err := s.Repo.GetLastRate(ctx, s.GetCode(base), s.GetCode(currencyCode))
+	//if errors.As(err, &pgx.ErrNoRows) {
+	//	return models.CurrencyRate{}, NoValueFoundError{Currency: currencyCode}
+	//}
 	if err != nil {
-		return models.CurrencyRate{}, fmt.Errorf("QueryRow: %w", err)
+		return models.CurrencyRate{}, err
 	}
-
-	cr := models.CurrencyRate{Base: base, Currency: currencyCode, UpdatedAt: updatedAt.String(), Value: value}
+	cr.Base = base
+	cr.Currency = currencyCode
 
 	return cr, nil
 }
