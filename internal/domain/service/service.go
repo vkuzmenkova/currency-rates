@@ -61,7 +61,7 @@ func NewCurrenciesService(ctx context.Context, config configs.Config) (*Currenci
 		KV:           rdb,
 	}
 
-	service.Pool.JobWithOptions("update_currency_rate", work.JobOptions{MaxFails: 5}, service.UpdateRateJob)
+	service.Pool.JobWithOptions("update_currency_rate", work.JobOptions{MaxFails: config.Redis.JobRetry}, service.UpdateRateJob)
 	service.Pool.Start()
 
 	return &service, nil

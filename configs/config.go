@@ -32,6 +32,7 @@ type RedisConfig struct {
 	Host      string
 	Port      string
 	NameSpace string
+	JobRetry  uint
 }
 
 func NewConfig(path, name string) (Config, error) {
