@@ -53,11 +53,16 @@ func NewCurrenciesService(ctx context.Context, config configs.Config) (*Currenci
 		DB:       0,
 	})
 
+	currencies, err := repo.GetCurrencies(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("repo.GetCurrencies: %w", err)
+	}
+
 	service := CurrenciesService{
 		Repo:         repo,
 		Enqueuer:     enqueuer,
 		Pool:         pool,
-		CurrencyList: domain.NewCurrencyList(),
+		CurrencyList: domain.NewCurrencyList("USD", &currencies),
 		KV:           rdb,
 	}
 

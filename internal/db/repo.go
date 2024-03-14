@@ -17,7 +17,7 @@ type CurrenciesRepo struct {
 func NewCurrenciesRepo(ctx context.Context, config configs.Config) (*CurrenciesRepo, error) {
 	conn, err := newPGConnection(ctx, config)
 	if err != nil {
-		log.Fatal().Msg("PG connection failed.")
+		log.Fatal().Err(err).Msg("PG connection failed.")
 		return nil, fmt.Errorf("newPGConnection: %w", err)
 	}
 	log.Info().Msg("PG connection established")

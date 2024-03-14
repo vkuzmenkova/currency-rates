@@ -60,7 +60,7 @@ func TestCurrenciesService_GetLastRate(t *testing.T) {
 			conn.On("QueryRow", mock.Anything, mock.Anything, uint8(1), uint8(2)).Return(row)
 
 			repo := &db.CurrenciesRepo{Conn: conn}
-			s := &CurrenciesService{Repo: repo, CurrencyList: domain.NewCurrencyList()}
+			s := &CurrenciesService{Repo: repo, CurrencyList: domain.NewCurrencyList("USD", nil)}
 
 			got, err := s.GetLastRate(tt.args.ctx, tt.args.base, tt.args.currencyCode)
 			if (err != nil) != tt.wantErr {

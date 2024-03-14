@@ -3,6 +3,8 @@
 package mocks
 
 import (
+	context "context"
+
 	mock "github.com/stretchr/testify/mock"
 	models "github.com/vkuzmenkova/currency-rates/models"
 )
@@ -12,9 +14,9 @@ type RatesProvider struct {
 	mock.Mock
 }
 
-// GetRate provides a mock function with given fields: base, currencyCode
-func (_m *RatesProvider) GetRate(base string, currencyCode string) (*models.CurrencyRate, error) {
-	ret := _m.Called(base, currencyCode)
+// GetRate provides a mock function with given fields: ctx, base, currencyCode
+func (_m *RatesProvider) GetRate(ctx context.Context, base string, currencyCode string) (*models.CurrencyRate, error) {
+	ret := _m.Called(ctx, base, currencyCode)
 
 	if len(ret) == 0 {
 		panic("no return value specified for GetRate")
@@ -22,19 +24,19 @@ func (_m *RatesProvider) GetRate(base string, currencyCode string) (*models.Curr
 
 	var r0 *models.CurrencyRate
 	var r1 error
-	if rf, ok := ret.Get(0).(func(string, string) (*models.CurrencyRate, error)); ok {
-		return rf(base, currencyCode)
+	if rf, ok := ret.Get(0).(func(context.Context, string, string) (*models.CurrencyRate, error)); ok {
+		return rf(ctx, base, currencyCode)
 	}
-	if rf, ok := ret.Get(0).(func(string, string) *models.CurrencyRate); ok {
-		r0 = rf(base, currencyCode)
+	if rf, ok := ret.Get(0).(func(context.Context, string, string) *models.CurrencyRate); ok {
+		r0 = rf(ctx, base, currencyCode)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*models.CurrencyRate)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(string, string) error); ok {
-		r1 = rf(base, currencyCode)
+	if rf, ok := ret.Get(1).(func(context.Context, string, string) error); ok {
+		r1 = rf(ctx, base, currencyCode)
 	} else {
 		r1 = ret.Error(1)
 	}

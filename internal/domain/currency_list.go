@@ -51,16 +51,9 @@ func (cl *CurrencyList) GetValueByCode(code string) uint8 {
 	return value
 }
 
-func NewCurrencyList() *CurrencyList {
-	base := "USD"
-	currencies := map[string]uint8{
-		"USD": 1,
-		"EUR": 2,
-		"MXN": 3,
-	}
-
+func NewCurrencyList(base string, currencies *map[string]uint8) *CurrencyList {
 	return &CurrencyList{
 		Base:                base,
-		AvailableCurrencies: currencies,
+		AvailableCurrencies: *currencies,
 	}
 }

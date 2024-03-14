@@ -60,7 +60,7 @@ func TestCurrenciesService_GetRateByUUID(t *testing.T) {
 			row.On("Scan", &baseVal, &currencyVal, &value, &updatedAt).Return(tt.args.error)
 			conn.On("QueryRow", mock.Anything, mock.Anything, tt.args.uuid).Return(row)
 			repo := &db.CurrenciesRepo{Conn: conn}
-			s := &CurrenciesService{Repo: repo, CurrencyList: domain.NewCurrencyList()}
+			s := &CurrenciesService{Repo: repo, CurrencyList: domain.NewCurrencyList("USD", nil)}
 
 			got, err := s.GetRateByUUID(tt.args.ctx, tt.args.uuid)
 			if (err != nil) != tt.wantErr {

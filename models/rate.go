@@ -14,3 +14,8 @@ type CurrencyUpdateUUID struct {
 	Currency string
 	UUID     uuid.UUID
 }
+
+type Currency struct {
+	Code string
+	ID   uint8
+}

@@ -17,12 +17,14 @@ type Repo interface {
 	GetLastRate(ctx context.Context, base uint8, currencyCode uint8)
 	GetRateByUUID(ctx context.Context, uuid uuid.UUID) (models.CurrencyRate, error)
 	InsertRate(ctx context.Context, uuidUpdate string, base uint8, currencyCode uint8, value float64) error
+	GetCurrencies(ctx context.Context) (map[string]uint8, error)
 }
 
 //go:generate go run github.com/vektra/mockery/v2@v2.42.0  --name=DB
 type DB interface {
 	Exec(ctx context.Context, sql string, arguments ...any) (pgconn.CommandTag, error)
 	QueryRow(ctx context.Context, sql string, args ...any) pgx.Row
+	Query(ctx context.Context, sql string, args ...any) (pgx.Rows, error)
 }
 
 //go:generate go run github.com/vektra/mockery/v2@v2.42.0  --name=Row

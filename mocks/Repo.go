@@ -17,6 +17,36 @@ type Repo struct {
 	mock.Mock
 }
 
+// GetCurrencies provides a mock function with given fields: ctx
+func (_m *Repo) GetCurrencies(ctx context.Context) (map[string]uint8, error) {
+	ret := _m.Called(ctx)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetCurrencies")
+	}
+
+	var r0 map[string]uint8
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context) (map[string]uint8, error)); ok {
+		return rf(ctx)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context) map[string]uint8); ok {
+		r0 = rf(ctx)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(map[string]uint8)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context) error); ok {
+		r1 = rf(ctx)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // GetLastRate provides a mock function with given fields: ctx, base, currencyCode
 func (_m *Repo) GetLastRate(ctx context.Context, base uint8, currencyCode uint8) {
 	_m.Called(ctx, base, currencyCode)
