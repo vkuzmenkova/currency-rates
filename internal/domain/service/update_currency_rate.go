@@ -59,7 +59,7 @@ func (s *CurrenciesService) UpdateRateJob(job *work.Job) error {
 
 	// Get info from the provider
 	provider := vat.NewVATProvider()
-	c, err := provider.GetRate(base, currencyCode)
+	c, err := provider.GetRate(ctx, base, currencyCode)
 	if err != nil {
 		log.Error().Msgf("Job failed. getRate: %s", err)
 		return fmt.Errorf("getBaseRate: %w", err)
