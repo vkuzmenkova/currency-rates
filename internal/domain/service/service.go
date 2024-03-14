@@ -44,8 +44,8 @@ func NewCurrenciesService(ctx context.Context, config configs.Config) (*Currenci
 			return redis.Dial("tcp", fmt.Sprintf("%s:%s", config.Redis.Host, config.Redis.Port))
 		},
 	}
-	enqueuer := work.NewEnqueuer(config.Redis.NameSpace, redisPool)
-	pool := work.NewWorkerPool(ctx, 10, config.Redis.NameSpace, redisPool)
+	enqueuer := work.NewEnqueuer(config.Redis.Namespace, redisPool)
+	pool := work.NewWorkerPool(ctx, 10, config.Redis.Namespace, redisPool)
 
 	rdb := goredis.NewClient(&goredis.Options{
 		Addr:     fmt.Sprintf("%s:%s", config.Redis.Host, config.Redis.Port),

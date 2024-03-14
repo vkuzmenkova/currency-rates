@@ -31,7 +31,7 @@ type DBConfig struct {
 type RedisConfig struct {
 	Host      string
 	Port      string
-	NameSpace string
+	Namespace string
 	JobRetry  uint
 }
 
@@ -54,8 +54,6 @@ func NewConfig(path, name string) (Config, error) {
 	if err != nil {
 		return Config{}, fmt.Errorf("viper.Unmarshal: %w", err)
 	}
-
-	fmt.Println("config", config)
 
 	return config, nil
 }

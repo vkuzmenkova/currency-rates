@@ -14,6 +14,7 @@ local:
     host: localhost
     port: 6379
     jobretry: 5
+    namespace: currency_rates
 
 container:
   server:
@@ -31,3 +32,4 @@ container:
     host: redis
     port: 6379
     jobretry: 5
+    namespace: currency_rates
