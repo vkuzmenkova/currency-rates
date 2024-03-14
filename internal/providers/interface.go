@@ -2,6 +2,7 @@ package providers
 
 import (
 	"context"
+
 	"github.com/vkuzmenkova/currency-rates/models"
 )
 

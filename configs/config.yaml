@@ -1,13 +1,31 @@
-server:
-  host: app
-  port: 8080
-db:
-  driver: postgres
-  host: db
-  port: 5432
-  name: postgres
-  user: postgres
-  password: qwerty
-  ssl_mode: disable
-redis:
-  port: 6379
+local:
+  server:
+    host: localhost
+    port: 8080
+  db:
+    driver: postgres
+    host: localhost
+    port: 5432
+    name: postgres
+    user: postgres
+    password: qwerty
+    ssl_mode: disable
+  redis:
+    host: localhost
+    port: 6379
+
+container:
+  server:
+    host: app
+    port: 8080
+  db:
+    driver: postgres
+    host: postgres
+    port: 5432
+    name: postgres
+    user: postgres
+    password: qwerty
+    ssl_mode: disable
+  redis:
+    host: redis
+    port: 6379

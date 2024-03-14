@@ -8,6 +8,8 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/vkuzmenkova/currency-rates/configs"
+
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 	currencyrates "github.com/vkuzmenkova/currency-rates/internal/domain/service"
@@ -18,10 +20,10 @@ type Controller struct {
 	service *currencyrates.CurrenciesService
 }
 
-func NewController(ctx context.Context) (*Controller, error) {
-	service, err := currencyrates.NewCurrenciesService(ctx)
+func NewController(ctx context.Context, config configs.Config) (*Controller, error) {
+	service, err := currencyrates.NewCurrenciesService(ctx, config)
 	if err != nil {
-		return &Controller{}, fmt.Errorf("NewCurrenciesService: %w", err)
+		return &Controller{}, fmt.Errorf("newCurrenciesService: %w", err)
 	}
 
 	return &Controller{

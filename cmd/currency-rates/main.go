@@ -7,10 +7,11 @@ import (
 	"os"
 	"time"
 
+	"github.com/vkuzmenkova/currency-rates/configs"
+
 	"github.com/rs/zerolog"
 
 	"github.com/gorilla/mux"
-	"github.com/spf13/viper"
 	"github.com/vkuzmenkova/currency-rates/internal/controller"
 	"github.com/vkuzmenkova/currency-rates/middleware"
 
@@ -37,7 +38,12 @@ func main() {
 	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
 	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
 
-	c, err := controller.NewController(ctx)
+	config, err := configs.NewConfig("./configs", "config")
+	if err != nil {
+		log.Err(err).Msg("cannot read config")
+	}
+
+	c, err := controller.NewController(ctx, config)
 	if err != nil {
 		log.Err(err)
 	}
@@ -62,7 +68,7 @@ func main() {
 
 	srv := http.Server{
 		Handler:      subrouter,
-		Addr:         fmt.Sprintf("%s:%s", viper.GetString("server.host"), viper.GetString("server.port")),
+		Addr:         fmt.Sprintf("%s:%s", config.Service.Host, config.Service.Port),
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}

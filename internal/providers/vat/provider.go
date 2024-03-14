@@ -4,10 +4,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/rs/zerolog/log"
 	"io"
 	"net/http"
 	"time"
+
+	"github.com/rs/zerolog/log"
 
 	"github.com/avast/retry-go"
 	"github.com/vkuzmenkova/currency-rates/internal/providers"

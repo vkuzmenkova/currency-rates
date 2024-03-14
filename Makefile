@@ -2,7 +2,12 @@ generate-docs:
 	swag init -g cmd/currency-rates/main.go
 
 run:
+	export DEPLOYMENT=local
 	go run cmd/currency-rates/main.go
+
+work:
+	workwebui -redis=":6379" -ns="currency_rates" -listen=":5040"
+
 
 linters:
 	golangci-lint run
