@@ -3,7 +3,6 @@ package currencyrates
 import (
 	"context"
 	"fmt"
-
 	"github.com/vkuzmenkova/currency-rates/configs"
 
 	goredis "github.com/go-redis/redis/v8"
@@ -62,7 +61,7 @@ func NewCurrenciesService(ctx context.Context, config configs.Config) (*Currenci
 		Repo:         repo,
 		Enqueuer:     enqueuer,
 		Pool:         pool,
-		CurrencyList: domain.NewCurrencyList("USD", &currencies),
+		CurrencyList: domain.NewCurrencyList("USD", currencies),
 		KV:           rdb,
 	}
 

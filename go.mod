@@ -4,6 +4,7 @@ go 1.21.4
 
 require (
 	github.com/Masterminds/squirrel v1.5.4
+	github.com/avast/retry-go v3.0.0+incompatible
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/gocraft/work v0.5.1
 	github.com/gomodule/redigo v1.9.2
@@ -19,7 +20,6 @@ require (
 
 require (
 	github.com/KyleBanks/depth v1.2.1 // indirect
-	github.com/avast/retry-go v3.0.0+incompatible // indirect
 	github.com/braintree/manners v0.0.0-20160418043613-82a8879fc5fd // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect

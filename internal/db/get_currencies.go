@@ -5,10 +5,9 @@ import (
 	"fmt"
 
 	sq "github.com/Masterminds/squirrel"
-	"github.com/vkuzmenkova/currency-rates/models"
 )
 
-func (r *CurrenciesRepo) GetCurrencies(ctx context.Context) (map[string]uint8, error) {
+func (r *CurrenciesRepo) GetCurrencies(ctx context.Context) (*map[string]uint8, error) {
 	sql, _, err := sq.Select("currency_code", "id").From("currencies").
 		PlaceholderFormat(sq.Dollar).ToSql()
 	if err != nil {
@@ -16,7 +15,6 @@ func (r *CurrenciesRepo) GetCurrencies(ctx context.Context) (map[string]uint8, e
 	}
 
 	currencies := make(map[string]uint8)
-	var c models.Currency
 
 	rows, err := r.Conn.Query(ctx, sql)
 	if err != nil {
@@ -24,13 +22,15 @@ func (r *CurrenciesRepo) GetCurrencies(ctx context.Context) (map[string]uint8, e
 	}
 
 	for rows.Next() {
-		err := rows.Scan(&c)
+		var code string
+		var id uint8
+		err := rows.Scan(&code, &id)
 		if err != nil {
 			return nil, fmt.Errorf("rows.Scan: %w", err)
 		}
 
-		currencies[c.Code] = c.ID
+		currencies[code] = id
 	}
 
-	return currencies, nil
+	return &currencies, nil
 }

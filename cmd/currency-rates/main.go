@@ -21,11 +21,11 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-const SHUTDOWN_TIMEOUT = 5 * time.Second
+const ShutdownTimeout = 5 * time.Second
 
 // @title           Swagger Currency Rates API
 // @version         1.0
-// @description     Base currency is USD. The following currencies are supported: USD, EUR, MXN. Info is provided by VAT comply.
+// @description     Base currency is USD. The following currencies are supported: USD, EUR, MXN, JPY, GBP, CHF. Info is provided by VAT comply.
 // @contact.name   Valentina Kuzmenkova
 // @contact.email  valentinakuzmenkova@gmail.com
 // @host      localhost:8080
@@ -40,12 +40,12 @@ func main() {
 
 	config, err := configs.NewConfig("./configs", "config")
 	if err != nil {
-		log.Err(err).Msg("cannot read config")
+		log.Fatal().Err(err).Msg("cannot read config")
 	}
 
 	c, err := controller.NewController(ctx, config)
 	if err != nil {
-		log.Err(err)
+		log.Fatal().Err(err).Msg("unable to create controller")
 	}
 
 	router := mux.NewRouter().StrictSlash(true)
@@ -75,6 +75,6 @@ func main() {
 
 	log.Info().Msg("Server started at :8080")
 
-	log.Err(srv.ListenAndServe())
+	log.Fatal().Err(srv.ListenAndServe())
 
 }

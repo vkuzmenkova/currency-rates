@@ -29,10 +29,10 @@ type DBConfig struct {
 }
 
 type RedisConfig struct {
-	Host      string
-	Port      string
-	Namespace string
-	JobRetry  uint
+	Host      string `mapstructure:"host"`
+	Port      string `mapstructure:"port"`
+	Namespace string `mapstructure:"namespace"`
+	JobRetry  uint   `mapstructure:"jobretry"`
 }
 
 func NewConfig(path, name string) (Config, error) {
